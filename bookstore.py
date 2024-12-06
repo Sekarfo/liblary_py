@@ -1,4 +1,4 @@
-import  sqlite3
+import sqlite3
 
 class Bookstore:
     def __init__(self, db_path):
@@ -20,9 +20,8 @@ class Bookstore:
                             (author, year, genre, price, amount, title))
         self.conn.commit()
 
-    
-    def get_book_by_title(self, title):
-        self.cursor.execute('SELECT * FROM books WHERE title = ?', (title,))
+    def search_book(self, title):
+        self.cursor.execute('SELECT title, author, year, genre, price, amount FROM books WHERE title = ?', (title,))
         row = self.cursor.fetchone()
         if row:
             return {
@@ -31,10 +30,9 @@ class Bookstore:
                 'year': row[2],
                 'genre': row[3],
                 'price': row[4],
-                'amount': row[5] 
-         }
+                'amount': row[5],
+            }
         return None
 
-
-    def clsoe_connection(self):
+    def close_connection(self):
         self.conn.close()
